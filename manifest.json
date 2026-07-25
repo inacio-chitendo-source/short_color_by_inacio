@@ -1,0 +1,21 @@
+{
+    "name": "Most Sound",
+    "short_name": "Most",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0000",
+    "theme_color": "#101010",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "./src/assets/icones/icon.jpg",
+            "size": "",
+            "type": "image/jpg"
+        },
+        {
+            "src": "./src/assets/icones/icon.png",
+            "size": "",
+            "type": "image/png"
+        }
+    ]
+}
