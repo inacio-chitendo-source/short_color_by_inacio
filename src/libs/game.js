@@ -101,10 +101,7 @@ export default class game{
 	
 	//create cups of the game each level
 	copo(colors, i, level, hasColor = true, t = 12){
-    const copo = document.createElement('div');
-	let clr;
-	const color = colors;
-	
+   
 	switch(level){
 		
 		case 1:
