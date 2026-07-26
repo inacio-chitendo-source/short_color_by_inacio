@@ -1,7 +1,6 @@
 import Game from "../libs/game";
-import { authMiddleware
+import { authMiddleware } from "../Middleware/AuthMiddleware";
 
- } from "../Middleware/AuthMiddleware";
 //["yellow", "red", "pink", "green", "blue", "orange", "gray", "brown", "#000", "#8432c7", "#f5f", "#e7c321f5"]
 
 const condition = (elements = {}) =>{
@@ -17,16 +16,17 @@ const condition = (elements = {}) =>{
 		if(elements.hasColor){
 			let c = j;
 			if(elements.i == 0){
-				if(c == 0) c = 2;
-				if(c == 2) c = 2;
-				if(c == 3) c -= 3;
+				if(c == 0) c = 3;
+				else if(c == 1) c = 3;
+				else if(c == 2) c = 2;
+				else if(c == 3) c -= 3;
 			}else if(elements.i == 1){
 				if(c == 2) c = 1;
-				if(c == 0) c = 2; 
-				if(c == 3) c = 0;
+				else if(c == 0) c = 2; 
+				else if(c == 3) c = 3;
 			}else if(elements.i == 2){
 				if( c == 3) c = 0;
-				if(c == 3) c -= 1;
+				else if(c == 3) c -= 1;
 			}
 
 			clr = color[c];
@@ -55,9 +55,9 @@ export default function level_6(){
 
 		localStorage.removeItem('welcome');
 		document.title = 'Level 6';
-		const colors = ["yellow", "red", "#b908", "#e049"];
+		const colors = ["#f8f408fd", "#f30707fd", "#9e9c0cfd", "#490e1f"];
 		let n_colors = colors.length; 
-		const sixth_level = new Game({colors, level: 6, empty: 0, cupEmptyNumber: n_colors, func: condition});
+		const sixth_level = new Game({colors, level: 6, empty: 1, cupEmptyNumber: n_colors, func: condition});
 		localStorage.setItem('level', 6);
 	
 		return sixth_level.draw_cups();

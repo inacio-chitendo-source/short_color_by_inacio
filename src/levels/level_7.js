@@ -1,7 +1,53 @@
 import Game from "../libs/game";
 import { authMiddleware } from "../Middleware/AuthMiddleware";
 
+
 //["yellow", "red", "pink", "green", "blue", "orange", "gray", "brown", "#000", "#8432c7", "#f5f", "#e7c321f5"]
+const condition = (elements = {}) =>{
+
+    const copo = document.createElement('div');
+	let clr;
+	const color = elements.colors;
+
+    if(elements.hasColor) copo.className = `copo copo${elements.i}`;
+	else copo.className = `copo copo${elements.i + elements.t}`;
+
+    for(let j = 0; j < 4; j++){
+		if(elements.hasColor){
+			let c = j;
+			if(elements.i == 0){
+				if(c == 0) c = 3;
+				else if(c == 1) c = 3;
+				else if(c == 2) c = 1;
+				else if(c == 3) c = 1;
+			}else if(elements.i == 1){
+				if(c == 2) c = 1;
+				else if(c == 1) c = 2;
+				else if(c == 0) c = 2; 
+				else if(c == 3) c = 3;
+			}else if(elements.i == 2){
+				if(c == 1) c = 0;
+				else if( c == 3) c = 0;
+				else if(c == 3) c -= 1;
+			}
+
+			clr = color[c];
+					
+			const div = document.createElement('div');
+			div.style = `background: ${clr};`;
+			div.className = `color ${clr} c${j}`;
+			copo.append(div);
+		}else{
+			clr = 'transparent';
+			const div = document.createElement('div');
+			div.style = `background: ${clr};`;
+			div.className = `color ${clr} c${j}`;
+			copo.append(div);
+		}
+	}
+	return copo;
+}
+
 export default function level_7(){
 
 	const verify = new authMiddleware(7);
@@ -11,9 +57,9 @@ export default function level_7(){
 
 		localStorage.removeItem('welcome');
 		document.title = 'Level 7';
-		const colors = ["yellow", "red"];
+		const colors = ["yellow", "red", "green", "blue"];
 		let n_colors = colors.length; 
-		const seventh_level = new Game({colors, level: 7, empty: 0, cupEmptyNumber: n_colors});
+		const seventh_level = new Game({colors, level: 7, empty: 1, cupEmptyNumber: n_colors, func: condition});
 		localStorage.setItem('level', 7);
 	
 		return seventh_level.draw_cups();

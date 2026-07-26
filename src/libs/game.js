@@ -145,7 +145,7 @@ export default class game{
 		break;
 	}
 	
-    return copo;
+    return;
 	}
 	
 	draw_cups(){
@@ -187,43 +187,45 @@ export default class game{
 		//funcao que verifica se as cores sao iguais ou se o copo esta cheio com a mesma cor e somente depoi permite se move ou nao
 		function move(elem1, elem2, segClass, changeColor, arrayColor, arrayColor1, firstClass, i, palco){
 			//move para o ultimo elemento
+			// i -> index of color
 			let element1 = elem1, cups = elem2, second_class = segClass;
 			let bgColor1, first_class = firstClass, firstColor = elem1, t = 600;
 
 
 			firstColor.querySelectorAll('div').forEach(color =>{
-			//console.log(color)
-			if(color.classList[2] == 'c3'){
+				//console.log(color)
+				if(color.classList[2] == 'c3'){
 				
-				if(color.classList[1] == 'transparent'){
+					if(color.classList[1] == 'transparent'){
 					
-					let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 1)}`).classList[1];
-					if(verColor == 'transparent'){
-						let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 2)}`).classList[1];
-						if(verColor == 'transparent'){
-							let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 3)}`).classList[1];
-							if(verColor == 'transparent'){
-								//faz nada
+						let verColorC2 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 1)}`).classList[1];
+						if(verColorC2 == 'transparent'){
+							let verColorC1 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 2)}`).classList[1];
+							if(verColorC1 == 'transparent'){
+								let verColorC0 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 3)}`).classList[1];
+								if(verColorC0 == 'transparent'){
+									//faz nada
+								}else{
+									bgColor1 = verColorC0;
+								}	
 							}else{
-								bgColor1 = verColor;
-							}	
+								bgColor1 = verColorC1;
+							}
 						}else{
-							bgColor1 = verColor;
+							bgColor1 = verColorC2;
 						}
 					}else{
-						bgColor1 = verColor;
-					}
-				}else{
-					bgColor1 = color.classList[1];
-				}	
-			}
-		})
+						bgColor1 = color.classList[1];
+					}	
+				}
+			})
 
 			if(arrayColor[i-1] == undefined){
-				if(arrayColor1[0].split(' ')[1] == arrayColor1[1].split(' ')[1] && arrayColor1[2].split(' ')[1] == arrayColor1[3].split(' ')[1] && arrayColor1[0].split(' ')[1] == arrayColor1[3].split(' ')[1]){
-					cups_back(this.palco, true)
+				if(arrayColor1[0] == arrayColor1[1] && arrayColor1[2] == arrayColor1[3] && arrayColor1[0] == arrayColor1[3]){
+					cups_back(this.palco, true);
 				}else{	
-								
+					
+					//IF USER CLICK THE FIRST CUPS UP AND DOWN LEFT
 					if(second_class == -1 || second_class == 6){
 
 						if(second_class == -1) second_class = 0;
@@ -232,7 +234,8 @@ export default class game{
 						element1.className = `isMoving copo${second_class}`;
 						element1.style.marginLeft = '-10.8em';
 						element1.style.marginTop = '-5rem';
-						//criar efeito agua escorrendo
+						
+						//CHANGE COLOR AND WATER EFFECT
 						changeColor(element1, cups);
 
 					}else{
@@ -240,7 +243,8 @@ export default class game{
 						element1.className = `isMoving copo${second_class}`;
 						element1.style.marginLeft = '-5.8em';
 						element1.style.marginTop = '-5rem';
-						//criar efeito agua escorrendo
+						
+						//CHANGE COLORS AND WATER EFFECT
 						changeColor(element1, cups);
 						
 					}
@@ -248,9 +252,9 @@ export default class game{
 						element1.className = first_class;
 						element1.style.marginLeft = '';
 						element1.style.marginTop = '';
-					}, 3000);
+					}, 1800);
 				}
-			}else if(bgColor1 == arrayColor[i-1].split(' ')[1]){
+			}else if(bgColor1 == arrayColor[i-1]){
 				if(second_class == -1 || second_class == 6){
 									
 					if(second_class == -1) second_class = 0;
@@ -259,8 +263,9 @@ export default class game{
 					element1.className = `isMoving copo${second_class}`;
 					element1.style.marginLeft = '-10.8em';
 					element1.style.marginTop = '-5rem';
-					//criar efeito agua escorrendo
-						changeColor(element1, cups);
+					
+					//CHANGE COLORS AND WATER EFFECT
+					changeColor(element1, cups);
 					
 
 				}else{
@@ -268,14 +273,15 @@ export default class game{
 					element1.className = `isMoving copo${second_class}`;
 					element1.style.marginLeft = '-5.8em';
 					element1.style.marginTop = '-5rem';
-					//criar efeito agua escorrendo
-						changeColor(element1, cups);
+					
+					//CHANGE COLORS AND WATER EFFECT
+					changeColor(element1, cups);
 				}
 				setTimeout(()=>{
 					element1.className = first_class;
 					element1.style.marginLeft = '';
 					element1.style.marginTop = '';
-				}, 3000);
+				}, 1800);
 			}else{
 				cups_back(palco, true);
 			}
@@ -295,7 +301,7 @@ export default class game{
 					localStorage.setItem('elementCup', elementCup.className);
 				}
 				
-				//condiction to know and changing about the clickState
+				//condiction to know and changing the clickState
 				if(i == 2){
 					clickState = false;
 				}
@@ -304,11 +310,12 @@ export default class game{
 					let arrayColor = [];
 
 					cups.querySelectorAll('div').forEach((clr, i) =>{
-						arrayColor[i] = clr.className;
+						arrayColor[i] = clr.classList[1];
 					})
 
-					if(arrayColor[0].split(' ')[1] != 'transparent'){
-						if(arrayColor[0].split(' ')[1] == arrayColor[1].split(' ')[1] && arrayColor[2].split(' ')[1] == arrayColor[3].split(' ')[1] && arrayColor[0].split(' ')[1] == arrayColor[3].split(' ')[1]){
+					//filter the cups if it has color or not
+					if(arrayColor[0] != 'transparent'){
+						if(arrayColor[0] == arrayColor[1] && arrayColor[2] == arrayColor[3] && arrayColor[0] == arrayColor[3]){
 							clickState = true;
 							i = 0;
 						}else{	
@@ -340,41 +347,41 @@ export default class game{
 					}
 
 					//datas of the first element clicked
-					let classe = localStorage.getItem('elementCup');
-					const element1 = this.palco.querySelector('.'+classe.split(' ')[1]);
+					let classe = '.'+localStorage.getItem('elementCup').split(' ')[1];
+					const element1 = this.palco.querySelector(classe);
 
 					//the main part of moving 
 					let first_class = element1.className;
 					let second_class = parseInt(cups.classList[1].slice(4, 6) - 1);
-					let arrayColor = [], arrayColor1 = [];
+					let arrayColorCup2 = [], arrayColorCup1 = [];
 
 					elementCup.querySelectorAll('div').forEach((clr, i) =>{
-						arrayColor[i] = clr.className;
+						arrayColorCup2[i] = clr.classList[1];
 					});
 
 					element1.querySelectorAll('div').forEach((clr, i) =>{
-						arrayColor1[i] = clr.className;
+						arrayColorCup1[i] = clr.classList[1];
 					});
 					
 					//moving cups
 					if(localStorage.getItem('elementCup') != elementCup.className){
-						if(arrayColor[3].split(' ')[1] == 'transparent'){
-							if(arrayColor[2].split(' ')[1] == 'transparent'){
-								if(arrayColor[1].split(' ')[1] == 'transparent'){
-									if(arrayColor[0].split(' ')[1] == 'transparent'){
-										if(arrayColor1[0].split(' ')[1] == arrayColor1[1].split(' ')[1] && arrayColor1[2].split(' ')[1] == arrayColor1[3].split(' ')[1] && arrayColor1[0].split(' ')[1] == arrayColor1[3].split(' ')[1]) cups_back(this.palco, true);	
-										else move(element1, cups, second_class, this.changeColor, arrayColor, arrayColor1, first_class, 0, this.palco);
+						if(arrayColorCup2[3] == 'transparent'){
+							if(arrayColorCup2[2] == 'transparent'){
+								if(arrayColorCup2[1] == 'transparent'){
+									if(arrayColorCup2[0] == 'transparent'){
+										if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups_back(this.palco, true);	
+										else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 0, this.palco);
 									}else{
-										if(arrayColor1[0].split(' ')[1] == arrayColor1[1].split(' ')[1] && arrayColor1[2].split(' ')[1] == arrayColor1[3].split(' ')[1] && arrayColor1[0].split(' ')[1] == arrayColor1[3].split(' ')[1]) cups_back(this.palco, true);	
-										else move(element1, cups, second_class, this.changeColor, arrayColor, arrayColor1, first_class, 1, this.palco);
+										if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups_back(this.palco, true);	
+										else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 1, this.palco);
 									}
 								}else{
-									if(arrayColor1[0].split(' ')[1] == arrayColor1[1].split(' ')[1] && arrayColor1[2].split(' ')[1] == arrayColor1[3].split(' ')[1] && arrayColor1[0].split(' ')[1] == arrayColor1[3].split(' ')[1]) cups_back(this.palco, true);	
-									else move(element1, cups, second_class, this.changeColor, arrayColor, arrayColor1, first_class, 2, this.palco);	
+									if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups(this.palco, true)
+									else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 2, this.palco);	
 								}
 							}else{
-								if(arrayColor1[0].split(' ')[1] == arrayColor1[1].split(' ')[1] && arrayColor1[2].split(' ')[1] == arrayColor1[3].split(' ')[1] && arrayColor1[0].split(' ')[1] == arrayColor1[3].split(' ')[1]) cups_back(this.palco, true);	
-								else move(element1, cups, second_class, this.changeColor, arrayColor, arrayColor1, first_class, 3, this.palco);
+								if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups(this.palco, true)
+								else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 3, this.palco);
 								this.win();
 							}
 						}else{
@@ -383,7 +390,7 @@ export default class game{
 					}
 				}
 
-				//controlling clicks for just 2 clicks accepts
+				//controlling clicks for just 2 clicks accepted
 				if(i == 2){
 					i = 0;
 				}
@@ -411,7 +418,7 @@ export default class game{
 				firstColor.querySelector(`.c${c}`).style = '';
 				firstColor.querySelector(`.c${c}`).className = `color ${bgColor2} c${c}`;
 				firstColor.querySelector(`.c${c}`).style.background = bgColor2;
-			}, 3000);
+			}, 1800);
 			return;
 
     	}else if(n_cup == 2){
@@ -419,7 +426,12 @@ export default class game{
         	// effect about the second cup
         	secondColor = element;
         	bgColor1 = color;
-        
+			//=============================================================
+			//n -> controller of setInterval
+			// c -> index of the color like c0 c1 c2 c3
+			// h -> hight of the line
+			//j -> hight of the color's div
+			//=============================================================
         	let n = 0, j = 0, h = 13.5;
 			if(c == 1){
 				j = 3;
@@ -457,17 +469,17 @@ export default class game{
 	        	//create the moving of the color when is getting in
 		    	if(c != 3) secondColor.querySelector(`.c${c}`).style = ` 
 					background: transparent; 
-					border-bottom:${n / 100}em solid ${bgColor1};`
+					border-bottom:${n / 10}em solid ${bgColor1};`
 				;
 		    	else secondColor.querySelector(`.c${c - 1}`).style = ` 
 					position: absolute;
 					margin-bottom: ${j - 3}em;
 					background: ${bgColor1}; 
-					height: ${3 + (n / 100)}em;`
+					height: ${3 + (n / 10)}em;`
 				;
 
 				n++;
-		    	if(n == (3 * 100)) {
+		    	if(n == (3 * 10)) {
 					//clean the interval
 			    	clearInterval(defColor)
 			    	
@@ -507,7 +519,7 @@ export default class game{
 					secondColor.querySelector(`.c${c}`).className = `color ${bgColor1} c${c}`;
 			    	secondColor.querySelector(`.c${c}`).style.background = bgColor1;
 		    	};
-	    	}, (1000 / 100 ));
+	    	}, (600 / 10 ));
 			return;
     	}
 	}
@@ -520,21 +532,21 @@ export default class game{
 				
 				if(color.classList[1] == 'transparent'){
 					
-					let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 1)}`).classList[1];
-					if(verColor == 'transparent'){
-						let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 2)}`).classList[1];
-						if(verColor == 'transparent'){
-							let verColor = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 3)}`).classList[1];
-							if(verColor == 'transparent'){
+					let verColorC2 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 1)}`).classList[1];
+					if(verColorC2 == 'transparent'){
+						let verColorC1 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 2)}`).classList[1];
+						if(verColorC1 == 'transparent'){
+							let verColorC0 = firstColor.querySelector(`.c${(parseInt(color.classList[2].slice(1, 2)) - 3)}`).classList[1];
+							if(verColorC0 == 'transparent'){
 								//faz nada
 							}else{
-								bgColor1 = verColor;
+								bgColor1 = verColorC0;
 							}	
 						}else{
-							bgColor1 = verColor;
+							bgColor1 = verColorC1;
 						}
 					}else{
-						bgColor1 = verColor;
+						bgColor1 = verColorC2;
 					}
 				}else{
 					bgColor1 = color.classList[1];
@@ -726,7 +738,7 @@ export default class game{
 					this.navigateTo(`/level_${this.level + 1}`)
 				})
 				this.palco.append(div);
-			}, 3200)
+			}, 2000)
 		}
 	}
 }
