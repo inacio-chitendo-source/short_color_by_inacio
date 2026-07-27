@@ -25,6 +25,7 @@ export default class game{
 		if( typeof component.view() == 'object'){
 			document.getElementById("palco").append(component.view());
 		}
+		history.pushState(null, null, '/short_color_by_inacio/'+this.path);
 	}
 	
 	matchRoute(){
