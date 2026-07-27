@@ -85,11 +85,11 @@ export default class game{
 			
 			btn.addEventListener('click', ()=>{
 				if((btn.className - 1) == localStorage.getItem(`level_${btn.className - 1}`)){
-					this.path = '/level_'+btn.className;
-					this.navigateTo('/level_'+btn.className);
+					this.path = '/short_color_by_inacio/level_'+btn.className;
+					this.navigateTo('/short_color_by_inacio/level_'+btn.className);
 				}else if(btn.className == 1){
-					this.path = '/level_1';
-					this.navigateTo('/level_1');
+					this.path = '/short_color_by_inacio/level_1';
+					this.navigateTo('/short_color_by_inacio/level_1');
 				}else{
 					alert('precisas passar os niveis anteriores primeiro!')
 				}
