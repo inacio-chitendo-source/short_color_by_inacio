@@ -11,37 +11,37 @@ import level_9 from "../levels/level_9.js";
 import level_10 from "../levels/level_10.js";
 
 export const routeConfig = {
-  	"/": { 
+  	"/short_color_by_inacio/": { 
 		view: welcome
 	},
-    "/level_1": { 
+    "/short_color_by_inacio/level_1": { 
 		view: level_1
 	},
-	"/level_2": { 
+	"/short_color_by_inacio/level_2": { 
 		view: level_2
 	},
-	"/level_3": { 
+	"/short_color_by_inacio/level_3": { 
 		view: level_3
 	},
-	"/level_4": { 
+	"/short_color_by_inacio/level_4": { 
 		view: level_4
 	},
-	"/level_5": { 
+	"/short_color_by_inacio/level_5": { 
 		view: level_5
 	},
-	"/level_6": { 
+	"/short_color_by_inacio/level_6": { 
 		view: level_6
 	},
-	"/level_7": { 
+	"/short_color_by_inacio/level_7": { 
 		view: level_7
 	},
-	"/level_8": { 
+	"/short_color_by_inacio/level_8": { 
 		view: level_8
 	},
-	"/level_9": { 
+	"/short_color_by_inacio/level_9": { 
 		view: level_9
 	},
-	"/level_10": { 
+	"/short_color_by_inacio/level_10": { 
 		view: level_10
 	}
 }

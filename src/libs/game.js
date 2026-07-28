@@ -5,7 +5,7 @@ import { routeConfig }  from "../route/router.js";
 export default class game{
 	constructor(elements = {}) {
 		this.colors = elements.colors || [];
-		this.conditionLevel = elements.func || function(){}; 
+		this.conditionLevelColor = elements.func || function(){}; 
 		this.level = elements.level || 0;
 		this.empty = elements.empty || 0;
 		this.cupEmpty = elements.cupEmptyNumber || 12;
@@ -20,24 +20,24 @@ export default class game{
 	//paths of the game
 	router(){
 		const {component, params} = this.matchRoute(this.path);
-		document.getElementById("palco").innerHTML = '';
+		this.palco.innerHTML = '';
 		
 		if( typeof component.view() == 'object'){
-			document.getElementById("palco").append(component.view());
+			this.palco.append(component.view());
 		}
 	}
 	
 	matchRoute(){
 		for(let route in routeConfig){
 			if(route.includes(":")){
-				const regex = new RegExp("^" + route.replace(/:\w+/g, "(.+)") + "$");
+				const regex = new RegExp("^" + route.replace(/:\w+/g, "(. +)") + "$");
 				const match = this.path.match(regex);
 				if(match){ 
-					return {component: routeConfig[route] || routeConfig["/"], params: {id:Math.floor(match[1])}};
+					return {component: routeConfig[route] || routeConfig["/short_color_by_inacio/"], params: {id:Math.floor(match[1])}};
 				}
 			}
 		}
-		return {component: routeConfig[this.path] || routeConfig["/"], params: {void : 0}};
+		return {component: routeConfig[this.path] || routeConfig["/short_color_by_inacio/"], params: {void : 0}};
 
 	}	 
 
@@ -84,11 +84,11 @@ export default class game{
 			
 			btn.addEventListener('click', ()=>{
 				if((btn.className - 1) == localStorage.getItem(`level_${btn.className - 1}`)){
-					this.path = '/level_'+btn.className;
-					this.navigateTo('/level_'+btn.className);
+					this.path = '/short_color_by_inacio/level_'+btn.className;
+					this.navigateTo('/short_color_by_inacio/level_'+btn.className);
 				}else if(btn.className == 1){
-					this.path = '/level_1';
-					this.navigateTo('/level_1');
+					this.path = '/short_color_by_inacio/level_1';
+					this.navigateTo('/short_color_by_inacio/level_1');
 				}else{
 					alert('precisas passar os niveis anteriores primeiro!')
 				}
@@ -105,43 +105,43 @@ export default class game{
 	switch(level){
 		
 		case 1:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 2:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 3:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 4:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 5:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 6:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 7:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 8:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 9:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 
 		case 10:
-			return this.conditionLevel({colors, i, hasColor, t});
+			return this.conditionLevelColor({colors, i, hasColor, t});
 		break;
 	}
 	
@@ -189,7 +189,8 @@ export default class game{
 			//move para o ultimo elemento
 			// i -> index of color
 			let element1 = elem1, cups = elem2, second_class = segClass;
-			let bgColor1, first_class = firstClass, firstColor = elem1, t = 600;
+			let bgColor1, first_class = firstClass, firstColor = elem1, t = 1800;
+			let countFirstCup = 0, countSecondCup = 0;
 
 
 			firstColor.querySelectorAll('div').forEach(color =>{
@@ -219,69 +220,169 @@ export default class game{
 					}	
 				}
 			})
+			 
+			let array = [];
+			element1.querySelectorAll('div').forEach((color, i) =>{
+				if(color.classList[1] == bgColor1) {
+					array[countFirstCup] = i;
+					countFirstCup++;
+				};
+			});
+
+			elem2.querySelectorAll('div').forEach((color, i) =>{
+				if(color.classList[1] == 'transparent') {
+					countSecondCup++;
+				};
+			})
+
+			if(array.length == 3 ){
+				if(array.includes(3) && array.includes(2) && array.includes(1)){
+					countFirstCup = 3;
+				}else if(array.includes(2) && array.includes(1) && array.includes(0)){
+					 countFirstCup = 3	
+				}else if(array.includes(3) && array.includes(2)){
+					countFirstCup = 2;
+				}else{
+					countFirstCup = 1;
+				}
+			}else if(array.length == 2){
+				if(array[0] > array[1] && array[0] - 1 == array[1]){
+					if(array[0] - 1 == array[1]) countFirstCup = 2;
+				}else if(array[0] < array[1] && array[1] - 1 == array[0]){
+					if(array[1] - 1 == array[0]) countFirstCup = 2;
+				}else{
+					countFirstCup = 1;
+				}
+			}else{
+				countFirstCup = 1;
+			}
+
+			console.log(countFirstCup, countSecondCup)
+
+			if(countSecondCup > 2 && countFirstCup == 3){
+				t *= 3;
+			}else if(countSecondCup == 2 && countFirstCup == 3){
+				t *=2;
+			}else if(countSecondCup >= 2 && countFirstCup == 2){
+				console.log('aqui')
+				t *=2;
+			}
+
+			localStorage.setItem('timeUp', t);
 
 			if(arrayColor[i-1] == undefined){
 				if(arrayColor1[0] == arrayColor1[1] && arrayColor1[2] == arrayColor1[3] && arrayColor1[0] == arrayColor1[3]){
 					cups_back(this.palco, true);
 				}else{	
 					
-					//IF USER CLICK THE FIRST CUPS UP AND DOWN LEFT
-					if(second_class == -1 || second_class == 6){
-
-						if(second_class == -1) second_class = 0;
-						else second_class = 7;
-
-						element1.className = `isMoving copo${second_class}`;
-						element1.style.marginLeft = '-10.8em';
-						element1.style.marginTop = '-5rem';
+					if( window.outerWidth < 800){
+						if(second_class == -1 || second_class == 3  || second_class == 7 || second_class == 11){
+							
+							if(second_class == -1) second_class = 0;
+							else if(second_class == 3) second_class = 4;
+							else if(second_class == 7) second_class = 8;
+							else if(second_class == 11) second_class = 12;
+							
+							element1.className = `isMoving copo${second_class}`;
+							element1.style.marginLeft = '-11.5em';
+							element1.style.marginTop = '-5rem';
 						
+							//CHANGE COLOR AND WATER EFFECT
+							changeColor(element1, cups);
+						}else{
+							
+							element1.className = `isMoving copo${second_class}`;
+							element1.style.marginLeft = '-5.8em';
+							element1.style.marginTop = '-5rem';
+						
+							//CHANGE COLORS AND WATER EFFECT
+							changeColor(element1, cups);
+						}
+					}else{
+						//IF USER CLICK THE FIRST CUPS UP AND DOWN LEFT
+						if(second_class == -1 || second_class == 6){
+
+							if(second_class == -1) second_class = 0;
+							else second_class = 7;
+
+							element1.className = `isMoving copo${second_class}`;
+							element1.style.marginLeft = '-11.5em';
+							element1.style.marginTop = '-5rem';
+						
+							//CHANGE COLOR AND WATER EFFECT
+							changeColor(element1, cups);
+
+						}else {
+
+							element1.className = `isMoving copo${second_class}`;
+							element1.style.marginLeft = '-5.8em';
+							element1.style.marginTop = '-5rem';
+						
+							//CHANGE COLORS AND WATER EFFECT
+							changeColor(element1, cups);
+						
+						}
+					}
+					setTimeout(()=>{
+						element1.className = first_class;
+						element1.style.marginLeft = '';
+						element1.style.marginTop = '';
+					}, t);
+				}
+
+			}else if(bgColor1 == arrayColor[i-1]){
+				if( window.outerWidth < 800){
+					if(second_class == -1 || second_class == 3  || second_class == 7 || second_class == 11){
+						
+						if(second_class == -1) second_class = 0;
+						else if(second_class == 3) second_class = 4;
+						else if(second_class == 7) second_class = 8;
+						else if(second_class == 11) second_class = 12;
+						console.log(second_class)
+						element1.className = `isMoving copo${second_class}`;
+						element1.style.marginLeft = '-11.5em';
+						element1.style.marginTop = '-5rem';
+					
 						//CHANGE COLOR AND WATER EFFECT
 						changeColor(element1, cups);
-
 					}else{
-
+						
 						element1.className = `isMoving copo${second_class}`;
 						element1.style.marginLeft = '-5.8em';
 						element1.style.marginTop = '-5rem';
 						
 						//CHANGE COLORS AND WATER EFFECT
 						changeColor(element1, cups);
-						
 					}
-					setTimeout(()=>{
-						element1.className = first_class;
-						element1.style.marginLeft = '';
-						element1.style.marginTop = '';
-					}, 1800);
-				}
-			}else if(bgColor1 == arrayColor[i-1]){
-				if(second_class == -1 || second_class == 6){
-									
-					if(second_class == -1) second_class = 0;
-					else second_class = 7;
-
-					element1.className = `isMoving copo${second_class}`;
-					element1.style.marginLeft = '-10.8em';
-					element1.style.marginTop = '-5rem';
-					
-					//CHANGE COLORS AND WATER EFFECT
-					changeColor(element1, cups);
-					
-
 				}else{
+					if(second_class == -1 || second_class == 6){
+									
+						if(second_class == -1) second_class = 0;
+						else second_class = 7;
 
-					element1.className = `isMoving copo${second_class}`;
-					element1.style.marginLeft = '-5.8em';
-					element1.style.marginTop = '-5rem';
+						element1.className = `isMoving copo${second_class}`;
+						element1.style.marginLeft = '-11.5em';
+						element1.style.marginTop = '-5rem';
 					
-					//CHANGE COLORS AND WATER EFFECT
-					changeColor(element1, cups);
+						//CHANGE COLORS AND WATER EFFECT
+						changeColor(element1, cups);
+					
+
+					}else{
+
+						element1.className = `isMoving copo${second_class}`;
+						element1.style.marginLeft = '-5.8em';
+						element1.style.marginTop = '-5rem';
+
+						//CHANGE COLORS AND WATER EFFECT
+						changeColor(element1, cups);
+					}
 				}
 				setTimeout(()=>{
 					element1.className = first_class;
 					element1.style.marginLeft = '';
 					element1.style.marginTop = '';
-				}, 1800);
+				}, t);
 			}else{
 				cups_back(palco, true);
 			}
@@ -311,7 +412,7 @@ export default class game{
 
 					cups.querySelectorAll('div').forEach((clr, i) =>{
 						arrayColor[i] = clr.classList[1];
-					})
+					});
 
 					//filter the cups if it has color or not
 					if(arrayColor[0] != 'transparent'){
@@ -371,13 +472,16 @@ export default class game{
 									if(arrayColorCup2[0] == 'transparent'){
 										if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups_back(this.palco, true);	
 										else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 0, this.palco);
+										this.win();
 									}else{
 										if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups_back(this.palco, true);	
 										else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 1, this.palco);
+										this.win();
 									}
 								}else{
 									if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups(this.palco, true)
 									else move(element1, cups, second_class, this.changeColor, arrayColorCup2, arrayColorCup1, first_class, 2, this.palco);	
+									this.win();
 								}
 							}else{
 								if(arrayColorCup1[0] == arrayColorCup1[1] && arrayColorCup1[2] == arrayColorCup1[3] && arrayColorCup1[0] == arrayColorCup1[3]) cups(this.palco, true)
@@ -402,35 +506,379 @@ export default class game{
 	changeColor(firstColor, secondColor){
 
 		function effectWater(element, color, n_cup, c){    
-    	if(n_cup == 1){
-        	//effect about the first cup
-        	firstColor = element;
-        	bgColor2 = color;
+			
+			if(n_cup == 1){
+        	
+			//effect about the first cup
+        	let bgColor2 = color;
+			const colorFirstCup = firstColor.querySelector(`.c${c}`);
+			
+			let counter = 0, i = 0, t = 0, arraySameColor = [], transparent = -1;
+			
+			for(i = c; i >= 0; i--){
+				//quantas cores iguais
+				// t -> retorna o index da ultima cor
+				//counter -> conta o total das cores iguais
 
+				if(colorFirstCup.classList[1] == element.querySelector(`.c${i}`).classList[1]){
+					arraySameColor[counter] = element.querySelector(`.c${i}`).className;
+					counter++;
+					t = i;
+				}
+			}
+
+			secondColor.querySelectorAll('div').forEach(color =>{
+				if(color.classList[1] == 'transparent') transparent++;
+			});
+
+			if(arraySameColor.length - 1 == 2){
+
+				if(c - 2 == t && arraySameColor[1].split(' ')[1] == colorFirstCup.classList[1] && transparent > 1 ){
+					//3 cores iguais e 3 ou 4 espaços vazios
+					let color2 = firstColor.querySelector(`.c${c - 1}`);
+					const color3 = firstColor.querySelector(`.c${c - 2}`);
+					localStorage.setItem('n_color_iguais', 3);
+
+					colorFirstCup.className = `color ${bgColor2} c${c}`;
+					color2.className = `color ${bgColor2} c${c - 1}`;
+					color3.className = `color ${bgColor2} c${c - 2}`;
+					
+					//effect bow in the first cup
+					colorFirstCup.style =` 
+						background: transparent; 
+						border-left:3.8em solid ${bgColor1}; 
+						border-top:3.8em solid transparent;`
+					;
+
+					setTimeout(()=>{
+						colorFirstCup.style = '';
+						colorFirstCup.style.background = bgColor2;
+						color2.style.background = bgColor2;
+						color3.style.background = bgColor2;
+					}, 1800 * 3);
+					return;
+					//console.log(colorFirstCup, color2, color3)
+				}else if(c - 2 == t && arraySameColor[1].split(' ')[1] == colorFirstCup.classList[1] && transparent == 1 ){
+					//3 cores iguais e 2 espaços vazios
+					const color2 = firstColor.querySelector(`.c${c - 1}`);
+					localStorage.setItem('n_color_iguais', 3);
+
+					colorFirstCup.className = `color ${bgColor2} c${c}`;
+					color2.className = `color ${bgColor2} c${c - 1}`;
+					
+					//effect bow in the first cup
+					colorFirstCup.style =` 
+						background: transparent; 
+						border-left:3.8em solid ${bgColor1}; 
+						border-top:3.8em solid transparent;`
+					;
+
+					setTimeout(()=>{
+						colorFirstCup.style = '';
+						colorFirstCup.style.background = bgColor2;
+						color2.style.background = bgColor2;
+					}, 1800 * 2);
+					return;
+				
+				}
+			
+			}else if(c -1 == t && transparent >= 1 ){
+				//console.log('as duas cores que se seguem sao iguais e 2 ou + 2 vaz');
+				const color2 = firstColor.querySelector(`.c${c - 1}`);
+				localStorage.setItem('n_color_iguais', 2);
+
+				colorFirstCup.className = `color ${bgColor2} c${c}`;
+				color2.className = `color ${bgColor2} c${c - 1}`;
+					
+					//effect bow in the first cup
+					colorFirstCup.style =` 
+						background: transparent; 
+						border-left:3.8em solid ${bgColor1}; 
+						border-top:3.8em solid transparent;`
+					;
+
+					setTimeout(()=>{
+						colorFirstCup.style = '';
+						colorFirstCup.style.background = bgColor2;
+						color2.style.background = bgColor2;
+					}, 1800 * 2);
+					return;
+			
+			}
+			
+			localStorage.setItem('n_color_iguais', 1);
+			colorFirstCup.className = `color ${bgColor2} c${c}`;
+			
 			//effect bow in the first cup
-			firstColor.querySelector(`.c${c}`).style =` 
+			colorFirstCup.style =` 
 				background: transparent; 
 				border-left:3.8em solid ${bgColor1}; 
 				border-top:3.8em solid transparent;`
 			;
 
 			setTimeout(()=>{
-				firstColor.querySelector(`.c${c}`).style = '';
-				firstColor.querySelector(`.c${c}`).className = `color ${bgColor2} c${c}`;
-				firstColor.querySelector(`.c${c}`).style.background = bgColor2;
+				colorFirstCup.style = '';
+				colorFirstCup.style.background = bgColor2;
 			}, 1800);
 			return;
 
-    	}else if(n_cup == 2){
+    	
+		}else if(n_cup == 2){
 
         	// effect about the second cup
-        	secondColor = element;
-        	bgColor1 = color;
+        	let bgColor1 = color;
+			const colorSecondCup = secondColor.querySelector(`.c${c}`);
+			
+
+			let counter = 0, i = 0; 
+			let sameColor = Number(localStorage.getItem('n_color_iguais'));
+			
+			for(i = c; i <= 3; i++){
+				//quantas cores iguais
+				// t -> retorna o index da ultima cor
+				//counter -> conta o total das cores iguais
+
+				if(secondColor.querySelector(`.c${i}`).classList[1] == 'transparent'){
+					counter++;
+				}
+				
+			}
+
+			
+			localStorage.setItem('emptyCup', counter);
+			//console.log(counter, sameColor);
+
+			if(sameColor == 3 && counter > 2){
+				//tres cores iguais e 3 ou mais vazios
+				const color2 = secondColor.querySelector(`.c${c + 1}`);
+				const color3 = secondColor.querySelector(`.c${c + 2}`);
+				console.log('aqui')
+				colorSecondCup.className = `color ${bgColor1} c${c}`;
+				color2.className = `color ${bgColor1} c${c + 1}`;
+				color3.className = `color ${bgColor1} c${c + 2}`; 
+
+				let n = 0, j = 0, h = 13.5;
+				if(c == 1){
+					j = 3;
+					h = h - 3;
+				}else if(c == 2){
+					j = 6;
+					h = h - 6;
+				}else if(c == 3){
+					j = 9;
+					h = h - 9;
+				}
+			
+				//draw the vertical line of the color
+				secondColor.querySelector(`.c${c + 1}`).style = `
+					position: absolute;
+					background: ${bgColor1}; 
+					width: .2em; 
+					height: ${h}em;
+					margin-left: -25px;
+					margin-bottom: ${j}rem; 
+					border-top: 10%;`
+				;
+			
+				const defColor = setInterval(()=>{
+					//if(){}
+	        		//create the moving of the color when is getting in
+		    		colorSecondCup.style = ` 
+						background: transparent; 
+						border-bottom:${n / 10}em solid ${bgColor1};`
+					;
+		    		
+
+					n++;
+		    		if(n == (3 * 30)) {
+						//clean the interval
+			    		clearInterval(defColor)
+			    	
+						//clean the effect of water 
+						secondColor.querySelector(`.c${c+1}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+
+						secondColor.querySelector(`.c${c}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+						
+
+						//change the classes of the both cups cup 1 and cup 2 their classes and their colors
+			    		color2.style.background = bgColor1
+						color3.style.background = bgColor1
+						colorSecondCup.style.background = bgColor1;
+		    		};
+					
+	    		}, (600 / 10 ));
+				return;
+
+			}else if(sameColor == 3 && counter == 2 ){
+				//tres cores iguais e 2 vazios
+				const color2 = secondColor.querySelector(`.c${c + 1}`);
+
+				colorSecondCup.className = `color ${bgColor1} c${c}`;
+				color2.className = `color ${bgColor1} c${c + 1}`; 
+
+				let n = 0, j = 0, h = 13.5;
+				if(c == 1){
+					j = 3;
+					h = h - 3;
+				}else if(c == 2){
+					j = 6;
+					h = h - 6;
+				}else if(c == 3){
+					j = 9;
+					h = h - 9;
+				}
+			
+				//draw the vertical line of the color
+				secondColor.querySelector(`.c${c + 1}`).style = `
+					position: absolute;
+					background: ${bgColor1}; 
+					width: .2em; 
+					height: ${h}em;
+					margin-left: -25px;
+					margin-bottom: ${j}rem; 
+					border-top: 10%;`
+				;
+			
+				const defColor = setInterval(()=>{
+					//if(){}
+	        		//create the moving of the color when is getting in
+		    		colorSecondCup.style = ` 
+						background: transparent; 
+						border-bottom:${n / 10}em solid ${bgColor1};`
+					;
+		    		
+
+					n++;
+		    		if(n == (3 * 20)) {
+						//clean the interval
+			    		clearInterval(defColor)
+			    	
+						//clean the effect of water 
+						secondColor.querySelector(`.c${c+1}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+
+						secondColor.querySelector(`.c${c}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+						
+
+						//change the classes of the both cups cup 1 and cup 2 their classes and their colors
+			    		color2.style.background = bgColor1
+						colorSecondCup.style.background = bgColor1;
+		    		};
+					
+	    		}, (600 / 10 ));
+				return;
+
+			}else if(sameColor == 2 && counter >= 2){
+				//duas cores iguais
+				const color2 = secondColor.querySelector(`.c${c + 1}`);
+
+				colorSecondCup.className = `color ${bgColor1} c${c}`;
+				color2.className = `color ${bgColor1} c${c + 1}`; 
+
+				let n = 0, j = 0, h = 13.5;
+				if(c == 1){
+					j = 3;
+					h = h - 3;
+				}else if(c == 2){
+					j = 6;
+					h = h - 6;
+				}else if(c == 3){
+					j = 9;
+					h = h - 9;
+				}
+			
+				//draw the vertical line of the color
+				secondColor.querySelector(`.c${c + 1}`).style = `
+					position: absolute;
+					background: ${bgColor1}; 
+					width: .2em; 
+					height: ${h}em;
+					margin-left: -25px;
+					margin-bottom: ${j}rem; 
+					border-top: 10%;`
+				;
+			
+				const defColor = setInterval(()=>{
+					//if(){}
+	        		//create the moving of the color when is getting in
+		    		colorSecondCup.style = ` 
+						background: transparent; 
+						border-bottom:${n / 10}em solid ${bgColor1};`
+					;
+		    		
+
+					n++;
+		    		if(n == (3 * 20)) {
+						//clean the interval
+			    		clearInterval(defColor)
+			    	
+						//clean the effect of water 
+						secondColor.querySelector(`.c${c+1}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+
+						secondColor.querySelector(`.c${c}`).style = `
+							position: ;
+							background: ; 
+							width: em; 
+							height: em;
+							margin-left: ;
+							margin-bottom: 0; 
+							border-top: 0;`
+						;
+						
+
+						//change the classes of the both cups cup 1 and cup 2 their classes and their colors
+			    		color2.style.background = bgColor1
+						colorSecondCup.style.background = bgColor1;
+		    		};
+					
+	    		}, (600 / 10 ));
+				return;
+			}
+			colorSecondCup.className = `color ${bgColor1} c${c}`;
 			//=============================================================
 			//n -> controller of setInterval
 			// c -> index of the color like c0 c1 c2 c3
-			// h -> hight of the line
-			//j -> hight of the color's div
+			// h -> hight of the water line
+			//j -> hight of the each div's color
 			//=============================================================
         	let n = 0, j = 0, h = 13.5;
 			if(c == 1){
@@ -464,8 +912,9 @@ export default class game{
 				border-top: 10%;`
 			;
 	    	
+			
 			const defColor = setInterval(()=>{
-				//if(){}
+				
 	        	//create the moving of the color when is getting in
 		    	if(c != 3) secondColor.querySelector(`.c${c}`).style = ` 
 					background: transparent; 
@@ -516,7 +965,6 @@ export default class game{
 					}
 
 					//change the classes of the both cups cup 1 and cup 2 their classes and their colors
-					secondColor.querySelector(`.c${c}`).className = `color ${bgColor1} c${c}`;
 			    	secondColor.querySelector(`.c${c}`).style.background = bgColor1;
 		    	};
 	    	}, (600 / 10 ));
@@ -687,19 +1135,19 @@ export default class game{
 		
 
 		this.palco.querySelectorAll('.copo').forEach((copo, index) =>{
-			
+			//console.log(copo);
 			copo.querySelectorAll('div').forEach((color, i)=>{
-				arrayColor[i] = color.className;
+				arrayColor[i] = color.classList[1];
 				//console.log(arrayColor)
 			})
-			if(arrayColor[0].split(' ')[1] == arrayColor[1].split(' ')[1] && arrayColor[2].split(' ')[1] == arrayColor[3].split(' ')[1] && arrayColor[0].split(' ')[1] == arrayColor[3].split(' ')[1] && arrayColor[0].split(' ')[1] != 'transparent'){
+			if(arrayColor[0] == arrayColor[1] && arrayColor[2] == arrayColor[3] && arrayColor[0] == arrayColor[3] && arrayColor[0] != 'transparent'){
 				verify = true;
 				contador++;
-				console.log(verify, contador, n_cups, this.level)
+				//console.log(verify, contador, n_cups, this.level)
 			}						
 		})
 		
-		if(verify == true && contador == n_cups){
+		if(verify == true && contador > n_cups){
 			localStorage.setItem(`level_${this.level}`, this.level);
 			setTimeout(()=>{
 				console.log('voce ganhou o nivel '+this.level);
@@ -734,11 +1182,11 @@ export default class game{
 				`;
 			
 				btn.addEventListener('click', ()=>{
-					this.path = `/level_${this.level + 1}`;
-					this.navigateTo(`/level_${this.level + 1}`)
+					this.path = `/short_color_by_inacio/level_${this.level + 1}`;
+					this.navigateTo(`/short_color_by_inacio/level_${this.level + 1}`)
 				})
 				this.palco.append(div);
-			}, 2000)
+			}, Number(localStorage.getItem('timeUp')) + 200)
 		}
 	}
 }

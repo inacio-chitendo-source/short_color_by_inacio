@@ -20,7 +20,6 @@ body{
 	display: flex;
 	justify-content: center;
 	width: 100%;
-	height: 100%;
 	color: #fff;
 	background: url(/src/assets/icones/backgrounds/bg0.jpg);
 	background-size: 100%;
@@ -29,9 +28,6 @@ body{
 	display: flex;
 	flex-direction: row;
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	gap: 8rem;
 	padding: .4rem;
 	flex-wrap: wrap;
@@ -114,17 +110,48 @@ button{
 	width: 6em;
 }
 
-@media(max-width: 780px){
-#palco{
-	width: 100%; 	
-}
-}
-
-@media(min-width: 781px){
+@media(min-width: 800px){
 #palco{
 	width: 600px;
 	height: 500px;
 	margin-top: 2rem;
 	margin-left: -2.8rem;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
+
+
+}
+
+@media(max-width: 780px){
+#palco{
+	width: 100%;
+	top: 10%;
+	left: 20%;
+	transform: translate(-20%, -10%); 	
+}
+.copo0, .copo4, .copo8, .copo12{
+	left: 2em;
+}
+.copo1, .copo5, .copo9, .copo13{
+	left: 8em;
+}
+.copo2, .copo6, .copo10, .copo14{
+	left: 14em;
+}
+.copo3, .copo7, .copo11{
+	left: 20em;
+}
+
+.copo4, .copo5, .copo6, .copo7{
+	top: 15em; 
+}
+.copo8, .copo9, .copo10, .copo11{
+	top: 20em; 
+}
+.copo12, .copo13, .copo14{
+	top: 60em; 
+}
+
 }
