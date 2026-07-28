@@ -21,7 +21,7 @@ body{
 	justify-content: center;
 	width: 100%;
 	color: #fff;
-	background: url(/src/assets/icones/backgrounds/bg0.jpg);
+	background: url(./src/assets/icones/backgrounds/bg0.jpg);
 	background-size: 100%;
 }
 #palco{
