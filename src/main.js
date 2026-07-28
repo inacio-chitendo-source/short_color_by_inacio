@@ -1,4 +1,4 @@
-import Game from "./libs/game";
+import Game from "./libs/game.js";
 //import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
