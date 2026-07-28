@@ -1,5 +1,5 @@
 import Game from "./libs/game";
-import 'bootstrap-icons/font/bootstrap-icons.css';
+//import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 const app = () =>{
