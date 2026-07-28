@@ -1,4 +1,4 @@
-import Game from "../libs/game";
+import Game from "../libs/game.js";
 
  
 export function authMiddleware(level){

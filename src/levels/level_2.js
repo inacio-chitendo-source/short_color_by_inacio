@@ -1,5 +1,5 @@
-import Game from "../libs/game";
-import { authMiddleware } from "../Middleware/AuthMiddleware";
+import Game from "../libs/game.js";
+import { authMiddleware } from "../Middleware/AuthMiddleware.js";
 
 
 

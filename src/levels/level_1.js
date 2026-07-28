@@ -1,4 +1,4 @@
-import Game from "../libs/game";
+import Game from "../libs/game.js";
 
 //["yellow", "red", "pink", "green", "blue", "orange", "gray", "brown", "#000", "#8432c7", "#f5f", "#e7c321f5"]
 
